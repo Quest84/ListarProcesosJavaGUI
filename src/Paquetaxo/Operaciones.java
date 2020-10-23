@@ -26,7 +26,7 @@ public class Operaciones {
     private DefaultTableModel setColumnas(){
         DefaultTM = new DefaultTableModel();
         DefaultTM.addColumn("Nombre de la Imagen");
-        DefaultTM.addColumn("PPID");
+        DefaultTM.addColumn("PID");
         DefaultTM.addColumn("Nombre de Sesion");
         DefaultTM.addColumn("Numero de Sesión");
         DefaultTM.addColumn("Uso de Memoria");
@@ -40,8 +40,8 @@ public class Operaciones {
             
             String line;
             Process p = Runtime.getRuntime().exec
-            // Se pueden usar los parámetros en tasklist  /fo csv /nh para sacar la info en formato CSV
                     (System.getenv("windir") + "\\system32\\" + "tasklist.exe /fo csv /nh");
+            // Se pueden usar los parámetros en tasklist  /fo csv /nh para sacar la info en formato CSV
             BufferedReader input =
                     new BufferedReader (new InputStreamReader(p.getInputStream()));
             while ((line = input.readLine()) != null) {
@@ -54,7 +54,6 @@ public class Operaciones {
             e.printStackTrace();
         }
         
-        System.out.println("Listo!");
         return DefaultTM;
     }
         
