@@ -91,6 +91,7 @@ public class Ventana extends javax.swing.JFrame {
                 jtf_NuevoProceso.setText("");
             }catch (IOException e){
                 JOptionPane.showMessageDialog(this, "No se encuentra ese proceso en la carpeta de System32, intenta con otro.");
+                jtf_NuevoProceso.setText("");
                 e.printStackTrace();
             }
         }
@@ -102,7 +103,7 @@ public class Ventana extends javax.swing.JFrame {
             String line;
             PrintWriter out = new PrintWriter("ListaProcesos.csv");
             Process p = Runtime.getRuntime().exec(System.getenv("windir") + "\\system32\\" + "tasklist.exe /fo csv");
-            // Se pueden usar los parámetros en tasklist  /fo csv /nh para sacar la info en formato CSV
+            // Se pueden usar los parámetros en tasklist  /fo csv /nh para sacar la info en formato CSV /nv para quitar el nombre de columnas
             BufferedReader input
                     = new BufferedReader(new InputStreamReader(p.getInputStream()));
             while ((line = input.readLine()) != null) { 
