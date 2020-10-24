@@ -5,29 +5,101 @@
  */
 package Paquetaxo;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
  * @author Manuel
  */
 public class Ventana extends javax.swing.JFrame {
+
     private final Operaciones OP;
-    
+
     public Ventana() {
         setTitle("Listado de Procesos del Sistema");
         initComponents();
         OP = new Operaciones();
         this.setLocationRelativeTo(null);
-    }
-    
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-
-    private void listar(){
-        jtb_Tabla.setModel(OP.getDatos());  
+        getCell();
     }
+
+    private void listar() {
+        jtb_Tabla.setModel(OP.getDatos());
+    }
+
+    private void getCell() {
+        ListSelectionModel cellSelectionModel = jtb_Tabla.getSelectionModel();
+        cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
+                String selectedData = null;
+
+                int[] selectedRow = jtb_Tabla.getSelectedRows();
+                int[] selectedColumns = jtb_Tabla.getSelectedColumns();
+
+                for (int i = 0; i < selectedRow.length; i++) {
+                    for (int j = 0; j < selectedColumns.length; j++) {
+                        if (selectedColumns[j] == 0 || selectedColumns[j] == 1) {
+                            selectedData = (String) jtb_Tabla.getValueAt(selectedRow[i], selectedColumns[j]);
+                        }
+                    }
+                }
+                jtf_EliminarProceso.setText(selectedData);
+                System.out.println(selectedData);
+            }
+        });
+    }
+
+    private void matar() {
+        String Proceso = jtf_EliminarProceso.getText();
+        if (Proceso.equals("")) {
+            //System.out.println("Nada por elimnar");
+            listar();
+        } else {
+            try {
+                System.out.println(Proceso);
+                Runtime.getRuntime().exec("taskkill /F /IM " + Proceso);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            listar();
+        }
+    }
+
+    private void descargar() {
+        try {
+            String line;
+            PrintWriter out = new PrintWriter("ListaProcesos.csv");
+            Process p = Runtime.getRuntime().exec(System.getenv("windir") + "\\system32\\" + "tasklist.exe /fo csv");
+            // Se pueden usar los parámetros en tasklist  /fo csv /nh para sacar la info en formato CSV
+            BufferedReader input
+                    = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            while ((line = input.readLine()) != null) {
+                //String[] dataLine = line.split(",");
+                try {
+                    out.println(line);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -88,7 +160,7 @@ public class Ventana extends javax.swing.JFrame {
         });
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Nuevo Proceso a Cargar");
+        jLabel1.setText("Nombre del Proceso a Cargar");
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         jtf_EliminarProceso.addActionListener(new java.awt.event.ActionListener() {
@@ -98,9 +170,14 @@ public class Ventana extends javax.swing.JFrame {
         });
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Proceso a Eliminar");
+        jLabel2.setText("Nombre del Proceso a Eliminar");
 
         jButton1.setText("Descargar Lista de Procesos");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -172,12 +249,18 @@ public class Ventana extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_CargarProcesosActionPerformed
 
     private void jtb_EliminarProcesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtb_EliminarProcesoActionPerformed
-        // TODO add your handling code here:
+        matar();
     }//GEN-LAST:event_jtb_EliminarProcesoActionPerformed
 
+    
     private void jtf_EliminarProcesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtf_EliminarProcesoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jtf_EliminarProcesoActionPerformed
+
+    
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        descargar();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
