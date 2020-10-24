@@ -74,8 +74,27 @@ public class Ventana extends javax.swing.JFrame {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            listar();
         }
+        JOptionPane.showMessageDialog(this, "Proceso finalizado");
+        listar();
+    }
+    
+    private void crear(){
+        String Proceso = jtf_NuevoProceso.getText();
+        if (Proceso.equals("")){
+            System.out.println("Nada por crear");
+            listar();
+        } else{
+            try{
+                Runtime.getRuntime().exec(
+                (System.getenv("windir") + "\\system32\\" + Proceso));
+                jtf_NuevoProceso.setText("");
+            }catch (IOException e){
+                JOptionPane.showMessageDialog(this, "No se encuentra ese proceso en la carpeta de System32, intenta con otro.");
+                e.printStackTrace();
+            }
+        }
+        listar();
     }
 
     private void descargar() {
@@ -86,7 +105,7 @@ public class Ventana extends javax.swing.JFrame {
             // Se pueden usar los parámetros en tasklist  /fo csv /nh para sacar la info en formato CSV
             BufferedReader input
                     = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            while ((line = input.readLine()) != null) {
+            while ((line = input.readLine()) != null) { 
                 //String[] dataLine = line.split(",");
                 try {
                     out.println(line);
@@ -95,6 +114,7 @@ public class Ventana extends javax.swing.JFrame {
                 }
             }
             out.close();
+            JOptionPane.showMessageDialog(this, "Lista de procesos descargada\nRevisa la raiz del proyecto");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -151,6 +171,11 @@ public class Ventana extends javax.swing.JFrame {
         });
 
         jtb_NuevoProceso.setText("Nuevo Proceso");
+        jtb_NuevoProceso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtb_NuevoProcesoActionPerformed(evt);
+            }
+        });
 
         jtb_EliminarProceso.setText("Eliminar Proceso");
         jtb_EliminarProceso.addActionListener(new java.awt.event.ActionListener() {
@@ -241,6 +266,7 @@ public class Ventana extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_SalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SalirActionPerformed
+        JOptionPane.showMessageDialog(this, "Manuel Ruiz IC-502");
         this.dispose();
     }//GEN-LAST:event_btn_SalirActionPerformed
 
@@ -261,6 +287,10 @@ public class Ventana extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         descargar();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jtb_NuevoProcesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtb_NuevoProcesoActionPerformed
+        crear();
+    }//GEN-LAST:event_jtb_NuevoProcesoActionPerformed
 
     /**
      * @param args the command line arguments
