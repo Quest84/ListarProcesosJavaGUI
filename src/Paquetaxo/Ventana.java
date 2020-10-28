@@ -88,8 +88,11 @@ public class Ventana extends javax.swing.JFrame {
 
         if (jrb_Console.isSelected()){
             NomSesion = "Console";
-        } else {
+        } else if (jrb_Services.isSelected()){
             NomSesion = "Services";
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecciona un Nombre de Servicio");
+            condicion = false;
         }
 
         int NumSesion = OP.makeRandom(1);
