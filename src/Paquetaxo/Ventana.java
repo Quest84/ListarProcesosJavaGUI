@@ -86,12 +86,10 @@ public class Ventana extends javax.swing.JFrame {
 
         int PID = OP.makeRandom(1000);
 
-        if (jtf_NomSesion.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Ingresa un Nombre de Sesión");
-            condicion = false;
+        if (jrb_Console.isSelected()){
+            NomSesion = "Console";
         } else {
-            NomSesion = jtf_NomSesion.getText();
-            condicion = true;
+            NomSesion = "Services";
         }
 
         int NumSesion = OP.makeRandom(1);
@@ -119,7 +117,8 @@ public class Ventana extends javax.swing.JFrame {
     private void limpiarCajas() {
         jtf_Nombre.setText("");
         //jtf_PID.setText("");
-        jtf_NomSesion.setText("");
+        jrb_Console.setSelected(false);
+        jrb_Services.setSelected(false);
         //jtf_NumSesion.setText("");
         //jtf_Memoria.setText("");
         //jtf_EstadoProceso.setText("");
@@ -162,6 +161,8 @@ public class Ventana extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtb_Tabla = new javax.swing.JTable();
         btn_CargarProcesos = new javax.swing.JButton();
@@ -175,11 +176,12 @@ public class Ventana extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JSeparator();
         jButton1 = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JSeparator();
-        jtf_NomSesion = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jSeparator4 = new javax.swing.JSeparator();
         jtf_Fila = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
+        jrb_Console = new javax.swing.JRadioButton();
+        jrb_Services = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -253,6 +255,20 @@ public class Ventana extends javax.swing.JFrame {
             }
         });
 
+        jrb_Console.setText("Console");
+        jrb_Console.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jrb_ConsoleActionPerformed(evt);
+            }
+        });
+
+        jrb_Services.setText("Services");
+        jrb_Services.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jrb_ServicesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -260,23 +276,29 @@ public class Ventana extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn_CargarProcesos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jtf_Nombre)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jSeparator3)
-                    .addComponent(jtf_NomSesion)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jSeparator4, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jSeparator1)
-                    .addComponent(jtf_Fila)
-                    .addComponent(jtb_EliminarProceso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jtf_EliminarProceso)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jtb_NuevoProceso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btn_Salir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(10, 10, 10)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btn_CargarProcesos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jtf_Nombre)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jSeparator3)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jSeparator4, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jSeparator1)
+                            .addComponent(jtf_Fila)
+                            .addComponent(jtb_EliminarProceso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jtf_EliminarProceso)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                            .addComponent(jtb_NuevoProceso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btn_Salir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(10, 10, 10))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jrb_Console)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jrb_Services)
+                        .addGap(18, 18, 18)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 689, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -295,8 +317,10 @@ public class Ventana extends javax.swing.JFrame {
                         .addComponent(jtf_Nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jtf_NomSesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jrb_Console)
+                            .addComponent(jrb_Services))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -363,6 +387,16 @@ public class Ventana extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jtf_FilaActionPerformed
 
+    private void jrb_ConsoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrb_ConsoleActionPerformed
+        jrb_Services.setSelected(false);
+        jrb_Console.setSelected(true);
+    }//GEN-LAST:event_jrb_ConsoleActionPerformed
+
+    private void jrb_ServicesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrb_ServicesActionPerformed
+        jrb_Services.setSelected(true);
+        jrb_Console.setSelected(false);
+    }//GEN-LAST:event_jrb_ServicesActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -390,6 +424,8 @@ public class Ventana extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_CargarProcesos;
     private javax.swing.JButton btn_Salir;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -399,12 +435,13 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JRadioButton jrb_Console;
+    private javax.swing.JRadioButton jrb_Services;
     private javax.swing.JButton jtb_EliminarProceso;
     private javax.swing.JButton jtb_NuevoProceso;
     private javax.swing.JTable jtb_Tabla;
     private javax.swing.JTextField jtf_EliminarProceso;
     private javax.swing.JTextField jtf_Fila;
-    private javax.swing.JTextField jtf_NomSesion;
     private javax.swing.JTextField jtf_Nombre;
     // End of variables declaration//GEN-END:variables
 }

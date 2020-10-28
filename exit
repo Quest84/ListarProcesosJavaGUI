@@ -1,0 +1,89 @@
+[33mcommit 2a3c4a51b4e78ae2d9b8586e409dcda72f375f99[m[33m ([m[1;36mHEAD -> [m[1;32mSimulador[m[33m, [m[1;31morigin/Simulador[m[33m)[m
+Author: Quest84 <QuestionSleep123@gmail.com>
+Date:   Wed Oct 28 14:32:59 2020 -0600
+
+    Eliminadas cajas sobrantes
+
+[33mcommit 9142c81534aa62c4251df405a5221b80926197e9[m
+Author: Quest84 <QuestionSleep123@gmail.com>
+Date:   Wed Oct 28 03:26:30 2020 -0600
+
+    JAR recompiado v.1
+
+[33mcommit 01c62adba73da853ddaaeb460585887db2223125[m
+Author: Quest84 <QuestionSleep123@gmail.com>
+Date:   Wed Oct 28 02:50:59 2020 -0600
+
+    Agregado eliminar proceso
+
+[33mcommit efb95b5151417a14a52683a05c39063b50d32740[m
+Author: Quest84 <QuestionSleep123@gmail.com>
+Date:   Wed Oct 28 01:59:12 2020 -0600
+
+    Comprueba si existe un archivo CSV
+
+[33mcommit d51b4e19662ab61382020e24a0cbec1708b87c2f[m
+Author: Quest84 <QuestionSleep123@gmail.com>
+Date:   Wed Oct 28 01:09:01 2020 -0600
+
+    Agregar nuevos procesos y archivo CSV de la tabla actual
+
+[33mcommit 41aa0492ade759c55a824a3c8a76497c10a72d85[m
+Author: Quest84 <QuestionSleep123@gmail.com>
+Date:   Tue Oct 27 22:40:35 2020 -0600
+
+    Agregada Columna EstadoProceso
+
+[33mcommit e28b9c9df18ce58a5291f4da9daf21f8851d9b5b[m
+Author: Quest84 <QuestionSleep123@gmail.com>
+Date:   Tue Oct 27 20:38:54 2020 -0600
+
+    Primer Commit
+
+[33mcommit 9b28c07ec83fcb508f6f97357660c62d7a8108a0[m
+Author: Quest84 <QuestionSleep123@gmail.com>
+Date:   Tue Oct 27 20:34:03 2020 -0600
+
+    Primer Commit
+
+[33mcommit c92a06e3b5ab893f1aeb9c39ba200dfc1bed5aaa[m[33m ([m[1;31morigin/master[m[33m, [m[1;32mmaster[m[33m)[m
+Author: Quest84 <QuestionSleep123@gmail.com>
+Date:   Sat Oct 24 03:26:02 2020 -0500
+
+    JAR Recompilado v1.0
+
+[33mcommit 8c4d2f956073ea1b96a531c7f1fe9d34873334c1[m
+Author: Quest84 <QuestionSleep123@gmail.com>
+Date:   Sat Oct 24 03:21:30 2020 -0500
+
+    Boton Nuevo y getCell
+
+[33mcommit 5ddd7866d0554527c781f5ee66367ad504a9ff04[m
+Author: Quest84 <QuestionSleep123@gmail.com>
+Date:   Fri Oct 23 21:50:00 2020 -0500
+
+    Eliminar y y descargar
+
+[33mcommit 62ecdf7ec661d99c5962651e1e9fe3bdf7d97080[m
+Author: Quest84 <QuestionSleep123@gmail.com>
+Date:   Fri Oct 23 03:49:50 2020 -0500
+
+    Agregados botones sin funcionalidad
+
+[33mcommit 24d880812fc06761895695c78a6e225d080bfb46[m
+Author: Quest84 <QuestionSleep123@gmail.com>
+Date:   Fri Oct 23 03:36:14 2020 -0500
+
+    JAR recompilado
+
+[33mcommit d410da6d8f340252ed854878f3755fee130d6e69[m
+Author: Quest84 <QuestionSleep123@gmail.com>
+Date:   Fri Oct 23 03:33:08 2020 -0500
+
+    Columnas corregidas
+
+[33mcommit d648868f71327e5fceb85f93f80ece9176d0fe92[m
+Author: Quest84 <QuestionSleep123@gmail.com>
+Date:   Wed Oct 21 05:18:01 2020 -0500
+
+    Primer Commit

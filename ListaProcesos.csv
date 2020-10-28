@@ -210,6 +210,5 @@ Nombre de la Imagen,PID,Nombre de Sesión,Numero de Sesión,Uso de Memoria,Estad
 "tasklist.exe","19908","Console","1","8704 KB","1",
 "conhost.exe","12640","Console","1","6128 KB","0",
 "WmiPrvSE.exe","14264","Services","0","8964 KB","0",
-"asdasd","728","asdasd","0","88097 KB","2",
-"qweqwe","635","qweqweasd","0","52462 KB","3",
-"NuevoProceos","226","asdasd","0","98826 KB","1",
+"Proceso de Prueba","336","Console","0","26898 KB","2",
+"Servicio de Prueba","786","Services","0","47611 KB","1",
