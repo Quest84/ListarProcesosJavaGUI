@@ -162,6 +162,8 @@ public class Ventana extends javax.swing.JFrame {
         try {
             TableModel model = jtb_Tabla.getModel();
             PrintWriter out = new PrintWriter("ListaProcesos.csv");
+            
+            
 
             for (int i = 0; i < model.getColumnCount(); i++) {
                 out.write(model.getColumnName(i) + ",");

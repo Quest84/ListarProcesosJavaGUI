@@ -6,13 +6,14 @@
 package Paquetaxo;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.Vector;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 /**
  *
@@ -48,44 +49,105 @@ public class Operaciones {
     }
 
     public DefaultTableModel getDatos() {
-        try {
-            setColumnas();
-
-            String line;
-            Process p = Runtime.getRuntime().exec(System.getenv("windir") + "\\system32\\" + "tasklist.exe /fo csv /nh");
-            // Se pueden usar los parámetros en tasklist  /fo csv /nh para sacar la info en formato CSV
-            BufferedReader input
-                    = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            while ((line = input.readLine()) != null) {
-                /* Agrega un numero random*/
-                int x = makeRandom(5);
-                /*Formatea las comas para que no cause problema el tamaño 
+        setColumnas();
+        
+        int condicion = 0;
+        File file = new File("ListaProcesos.csv");
+        if(file.exists()){
+            condicion = 1;
+            System.out.println("existe");
+        } else{
+            condicion = 0;
+            System.out.println("no existe");
+        }
+        
+        switch (condicion) {
+            // Si no existe el archivo
+            case 0:
+                try {
+                    String line;
+                    Process p = Runtime.getRuntime().exec(System.getenv("windir") + "\\system32\\" + "tasklist.exe /fo csv /nh");
+                    // Se pueden usar los parámetros en tasklist  /fo csv /nh para sacar la info en formato CSV
+                    BufferedReader input
+                            = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                    while ((line = input.readLine()) != null) {
+                        /* Agrega un numero random*/
+                        int x = makeRandom(5);
+                        /*Formatea las comas para que no cause problema el tamaño 
                 de memoria que también lleva coma */
-                line = line + "," + "\"" + x + "\"";
-                line = line.replace(",", "");
-                line = line.replace("\"\"", "\",\"");
-                /* Separa el chorizo de datos */
-                String[] dataLine = line.split(",");
-                DefaultTM.addRow(dataLine);
-            }
+                        line = line + "," + "\"" + x + "\"";
+                        line = line.replace(",", "");
+                        line = line.replace("\"\"", "\",\"");
+                        /* Separa el chorizo de datos */
+                        String[] dataLine = line.split(",");
+                        DefaultTM.addRow(dataLine);
+                    }
 
-            input.close();
+                    input.close();
 
-        } catch (Exception e) {
-            e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case 1:
+                String inputFileName;
+                File inputFile;
+                String firstRow;
+                Vector<Vector<String>> vectorVectorStringsData = new Vector<Vector<String>>();
+                Vector<String> vectorStrings = new Vector<String>();
+                Vector<String> vectorColumnIdentifiers = new Vector<String>();
+                String[] columnIdentifiers;
+                JTable jTable;
+
+                inputFileName = "ListaProcesos.csv";
+                inputFile = new File(inputFileName);
+                try (FileReader fr = new FileReader(inputFile);
+                        BufferedReader br = new BufferedReader(fr)) {
+                    firstRow = br.readLine().trim();
+                    if (firstRow != null) {
+                        // headers:
+                        columnIdentifiers = firstRow.split(",");
+
+                        vectorColumnIdentifiers = new Vector<String>();
+                        for (int j = 0; j < columnIdentifiers.length; j++) {
+                            vectorColumnIdentifiers.add(columnIdentifiers[j]);
+                        }
+                    }
+                    // rows
+                    Object[] tableLines = br.lines().toArray();
+                    // data rows
+                    for (int i = 0; i < tableLines.length; i++) {
+                        //System.out.println("4");
+                        String line = tableLines[i].toString().trim();
+                        String[] dataRow = line.split(",");
+                        vectorStrings = new Vector<String>();
+                        for (int j = 0; j < dataRow.length; j++) {
+                            vectorStrings.add(dataRow[j]);
+                        }
+                        vectorVectorStringsData.add(vectorStrings);
+                    }
+
+                    fr.close();
+                } catch (IOException ioe) {
+                    System.out.println("Error: " + ioe.getMessage());
+                }
+
+                DefaultTM.setDataVector(vectorVectorStringsData, vectorColumnIdentifiers);
+                jTable = new JTable(DefaultTM);
         }
 
-        return DefaultTM;
-    }
-    
-    public DefaultTableModel setDatos(String linea){
-        String[] dataLine = linea.split(",");
-        DefaultTM.addRow(dataLine);       
-        
-        return DefaultTM;
-    }
-    
 
+        // Si existe el archivo
+        return DefaultTM;
+    }
+
+    public DefaultTableModel setDatos(String linea) {
+        String[] dataLine = linea.split(",");
+        DefaultTM.addRow(dataLine);
+
+        return DefaultTM;
+    }
 
     /*public DefaultTableModel getDatos(int estado) {
         switch (estado) {
