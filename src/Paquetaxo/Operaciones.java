@@ -148,6 +148,12 @@ public class Operaciones {
 
         return DefaultTM;
     }
+    
+    public DefaultTableModel deleteRow(int index){
+        DefaultTM.removeRow(index);
+        
+        return DefaultTM;
+    }
 
     /*public DefaultTableModel getDatos(int estado) {
         switch (estado) {

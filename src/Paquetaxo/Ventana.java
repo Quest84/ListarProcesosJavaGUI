@@ -53,34 +53,22 @@ public class Ventana extends javax.swing.JFrame {
                 int[] selectedRow = jtb_Tabla.getSelectedRows();
                 int[] selectedColumns = jtb_Tabla.getSelectedColumns();
 
-                for (int i = 0; i < selectedRow.length; i++) {
-                    for (int j = 0; j < selectedColumns.length; j++) {
+                int i = 0;
+                int j = 0;
+                for (i = 0; i < selectedRow.length; i++) {
+                    for (j = 0; j < selectedColumns.length; j++) {
+                        jtf_Fila.setText(""+selectedRow[i]);
                         if (selectedColumns[j] == 0 || selectedColumns[j] == 1) {
                             selectedData = (String) jtb_Tabla.getValueAt(selectedRow[i], selectedColumns[j]);
+                            // Pequeño truco
+                            
                         }
                     }
                 }
                 jtf_EliminarProceso.setText(selectedData);
                 System.out.println(selectedData);
             }
-        });
-    }
-
-    private void matar() {
-        String Proceso = jtf_EliminarProceso.getText();
-        if (Proceso.equals("")) {
-            //System.out.println("Nada por elimnar");
-            listar();
-        } else {
-            try {
-                System.out.println(Proceso);
-                Runtime.getRuntime().exec("taskkill /F /IM " + Proceso);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        JOptionPane.showMessageDialog(this, "Proceso finalizado");
-        listar();
+        });       
     }
 
     private void crear() {
@@ -183,6 +171,8 @@ public class Ventana extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
+    
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -217,6 +207,7 @@ public class Ventana extends javax.swing.JFrame {
         jtf_EstadoProceso = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jSeparator4 = new javax.swing.JSeparator();
+        jtf_Fila = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -312,6 +303,13 @@ public class Ventana extends javax.swing.JFrame {
         jLabel7.setText("Estado de Proceso");
         jLabel7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
+        jtf_Fila.setEnabled(false);
+        jtf_Fila.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtf_FilaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -340,17 +338,17 @@ public class Ventana extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtb_EliminarProceso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jtf_EliminarProceso)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jSeparator2)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE))
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_Salir, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(65, 65, 65))))
+                        .addGap(65, 65, 65))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jtf_Fila, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtb_EliminarProceso, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jtf_EliminarProceso, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -393,7 +391,9 @@ public class Ventana extends javax.swing.JFrame {
                         .addComponent(jtb_NuevoProceso)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(140, 140, 140)
+                .addGap(114, 114, 114)
+                .addComponent(jtf_Fila, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jtb_EliminarProceso)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jtf_EliminarProceso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -422,7 +422,12 @@ public class Ventana extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_CargarProcesosActionPerformed
 
     private void jtb_EliminarProcesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtb_EliminarProcesoActionPerformed
-        matar();
+        int index;
+        String row = jtf_Fila.getText();
+        index = Integer.parseInt(row);
+        
+        OP.deleteRow(index);
+        JOptionPane.showMessageDialog(this,"Proceso Eliminado");
     }//GEN-LAST:event_jtb_EliminarProcesoActionPerformed
 
 
@@ -442,6 +447,10 @@ public class Ventana extends javax.swing.JFrame {
     private void jtf_NumSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtf_NumSesionActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jtf_NumSesionActionPerformed
+
+    private void jtf_FilaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtf_FilaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtf_FilaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -487,6 +496,7 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JTable jtb_Tabla;
     private javax.swing.JTextField jtf_EliminarProceso;
     private javax.swing.JTextField jtf_EstadoProceso;
+    private javax.swing.JTextField jtf_Fila;
     private javax.swing.JTextField jtf_Memoria;
     private javax.swing.JTextField jtf_NomSesion;
     private javax.swing.JTextField jtf_Nombre;
