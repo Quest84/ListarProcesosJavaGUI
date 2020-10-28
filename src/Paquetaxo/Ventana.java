@@ -6,15 +6,19 @@
 package Paquetaxo;
 
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -78,27 +82,61 @@ public class Ventana extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Proceso finalizado");
         listar();
     }
-    
-    private void crear(){
-        String Proceso = jtf_NuevoProceso.getText();
-        if (Proceso.equals("")){
-            System.out.println("Nada por crear");
-            listar();
-        } else{
-            try{
-                Runtime.getRuntime().exec(
-                (System.getenv("windir") + "\\system32\\" + Proceso));
-                jtf_NuevoProceso.setText("");
-            }catch (IOException e){
-                JOptionPane.showMessageDialog(this, "No se encuentra ese proceso en la carpeta de System32, intenta con otro.");
-                jtf_NuevoProceso.setText("");
-                e.printStackTrace();
-            }
+
+    private void crear() {
+        boolean condicion = false;
+        String nombre = "";
+        String NomSesion = "";
+
+        if (jtf_Nombre.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Ingresa un nombre");
+        } else {
+            nombre = jtf_Nombre.getText();
+            condicion = true;
         }
-        listar();
+
+        int PID = OP.makeRandom(1000);
+
+        if (jtf_NomSesion.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Ingresa un Nombre de Sesión");
+            condicion = false;
+        } else {
+            NomSesion = jtf_NomSesion.getText();
+            condicion = true;
+        }
+
+        int NumSesion = OP.makeRandom(1);
+
+        int Memoria = OP.makeRandom(100000);
+
+        int Estado = OP.makeRandom(5);
+
+        if (condicion == true) {
+            String chorizo = "\"" + nombre + "\"," + "\"" + PID + "\"," + "\"" + NomSesion + "\"," + "\"" + NumSesion + "\","
+                    + "\"" + Memoria + " KB\"," + "\"" + Estado + "\",";
+
+            limpiarCajas();
+
+            System.out.println(chorizo);
+
+            OP.setDatos(chorizo);
+
+        } else {
+            // do nothing
+        }
+
     }
 
-    private void descargar() {
+    private void limpiarCajas() {
+        jtf_Nombre.setText("");
+        jtf_PID.setText("");
+        jtf_NomSesion.setText("");
+        jtf_NumSesion.setText("");
+        jtf_Memoria.setText("");
+        jtf_EstadoProceso.setText("");
+    }
+
+    /*private void descargar() {
         try {
             String line;
             PrintWriter out = new PrintWriter("ListaProcesos.csv");
@@ -119,6 +157,29 @@ public class Ventana extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }*/
+    private void convertir() {
+        try {
+            TableModel model = jtb_Tabla.getModel();
+            PrintWriter out = new PrintWriter("ListaProcesos.csv");
+
+            for (int i = 0; i < model.getColumnCount(); i++) {
+                out.write(model.getColumnName(i) + ",");
+            }
+
+            out.write("\n");
+
+            for (int i = 0; i < model.getRowCount(); i++) {
+                for (int j = 0; j < model.getColumnCount(); j++) {
+                    out.write(model.getValueAt(i, j).toString() + ",");
+                }
+                out.write("\n");
+            }
+            out.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -135,14 +196,25 @@ public class Ventana extends javax.swing.JFrame {
         btn_CargarProcesos = new javax.swing.JButton();
         btn_Salir = new javax.swing.JButton();
         jtb_NuevoProceso = new javax.swing.JButton();
-        jtf_NuevoProceso = new javax.swing.JTextField();
+        jtf_Nombre = new javax.swing.JTextField();
         jtb_EliminarProceso = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jtf_EliminarProceso = new javax.swing.JTextField();
-        jSeparator1 = new javax.swing.JSeparator();
         jLabel2 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         jButton1 = new javax.swing.JButton();
+        jSeparator3 = new javax.swing.JSeparator();
+        jtf_PID = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jtf_NomSesion = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jtf_NumSesion = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jtf_Memoria = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jtf_EstadoProceso = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jSeparator4 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -186,7 +258,7 @@ public class Ventana extends javax.swing.JFrame {
         });
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Nombre del Proceso a Cargar");
+        jLabel1.setText("Nombre del Proceso");
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         jtf_EliminarProceso.addActionListener(new java.awt.event.ActionListener() {
@@ -205,61 +277,132 @@ public class Ventana extends javax.swing.JFrame {
             }
         });
 
+        jtf_PID.setEnabled(false);
+
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("PID");
+        jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Nombre de Sesión");
+        jLabel4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        jtf_NumSesion.setEnabled(false);
+        jtf_NumSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtf_NumSesionActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("Numero de Sesion");
+        jLabel5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        jtf_Memoria.setEnabled(false);
+
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("Uso de Memoria");
+        jLabel6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        jtf_EstadoProceso.setEnabled(false);
+
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("Estado de Proceso");
+        jLabel7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btn_CargarProcesos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
+                    .addComponent(jtf_Nombre)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
+                    .addComponent(jSeparator3)
+                    .addComponent(jtf_PID)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jtf_NomSesion)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jtf_NumSesion)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jtf_Memoria)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jtf_EstadoProceso)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jtb_NuevoProceso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSeparator4, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 532, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btn_CargarProcesos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jtb_NuevoProceso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jtf_NuevoProceso)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jtb_EliminarProceso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jtf_EliminarProceso)
-                            .addComponent(jSeparator1)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jSeparator2)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE))
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(65, 65, 65)
-                        .addComponent(btn_Salir)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 530, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_Salir, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(65, 65, 65))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(7, 7, 7)
                         .addComponent(btn_CargarProcesos)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtb_NuevoProceso)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtf_NuevoProceso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(4, 4, 4)
+                        .addComponent(jtf_Nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel1)
-                        .addGap(13, 13, 13)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtb_EliminarProceso)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtf_EliminarProceso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)
                         .addGap(18, 18, 18)
-                        .addComponent(btn_Salir)))
+                        .addComponent(jtf_PID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(jtf_NomSesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4)
+                        .addGap(18, 18, 18)
+                        .addComponent(jtf_NumSesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel5)
+                        .addGap(18, 18, 18)
+                        .addComponent(jtf_Memoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel6)
+                        .addGap(18, 18, 18)
+                        .addComponent(jtf_EstadoProceso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jtb_NuevoProceso)))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(140, 140, 140)
+                .addComponent(jtb_EliminarProceso)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jtf_EliminarProceso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addGap(18, 18, 18)
+                .addComponent(btn_Salir)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -273,25 +416,30 @@ public class Ventana extends javax.swing.JFrame {
 
     private void btn_CargarProcesosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CargarProcesosActionPerformed
         listar();
+        btn_CargarProcesos.setEnabled(false);
     }//GEN-LAST:event_btn_CargarProcesosActionPerformed
 
     private void jtb_EliminarProcesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtb_EliminarProcesoActionPerformed
         matar();
     }//GEN-LAST:event_jtb_EliminarProcesoActionPerformed
 
-    
+
     private void jtf_EliminarProcesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtf_EliminarProcesoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jtf_EliminarProcesoActionPerformed
 
-    
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        descargar();
+        convertir();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jtb_NuevoProcesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtb_NuevoProcesoActionPerformed
         crear();
     }//GEN-LAST:event_jtb_NuevoProcesoActionPerformed
+
+    private void jtf_NumSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtf_NumSesionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtf_NumSesionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -323,13 +471,24 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
     private javax.swing.JButton jtb_EliminarProceso;
     private javax.swing.JButton jtb_NuevoProceso;
     private javax.swing.JTable jtb_Tabla;
     private javax.swing.JTextField jtf_EliminarProceso;
-    private javax.swing.JTextField jtf_NuevoProceso;
+    private javax.swing.JTextField jtf_EstadoProceso;
+    private javax.swing.JTextField jtf_Memoria;
+    private javax.swing.JTextField jtf_NomSesion;
+    private javax.swing.JTextField jtf_Nombre;
+    private javax.swing.JTextField jtf_NumSesion;
+    private javax.swing.JTextField jtf_PID;
     // End of variables declaration//GEN-END:variables
 }
