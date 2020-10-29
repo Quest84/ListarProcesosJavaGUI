@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Paquetaxo;
 
 import java.io.BufferedReader;
@@ -50,17 +45,17 @@ public class Operaciones {
 
     public DefaultTableModel getDatos() {
         setColumnas();
-        
+
         int condicion = 0;
         File file = new File("ListaProcesos.csv");
-        if(file.exists()){
+        if (file.exists()) {
             condicion = 1;
             System.out.println("existe");
-        } else{
+        } else {
             condicion = 0;
             System.out.println("no existe");
         }
-        
+
         switch (condicion) {
             // Si no existe el archivo
             case 0:
@@ -74,7 +69,7 @@ public class Operaciones {
                         /* Agrega un numero random*/
                         int x = makeRandom(5);
                         /*Formatea las comas para que no cause problema el tamaño 
-                de memoria que también lleva coma */
+                        de memoria que también lleva coma */
                         line = line + "," + "\"" + x + "\"";
                         line = line.replace(",", "");
                         line = line.replace("\"\"", "\",\"");
@@ -90,6 +85,7 @@ public class Operaciones {
                 }
                 break;
 
+            // Si existe el archivo         
             case 1:
                 String inputFileName;
                 File inputFile;
@@ -137,8 +133,6 @@ public class Operaciones {
                 jTable = new JTable(DefaultTM);
         }
 
-
-        // Si existe el archivo
         return DefaultTM;
     }
 
@@ -148,41 +142,11 @@ public class Operaciones {
 
         return DefaultTM;
     }
-    
-    public DefaultTableModel deleteRow(int index){
+
+    public DefaultTableModel deleteRow(int index) {
         DefaultTM.removeRow(index);
-        
+
         return DefaultTM;
     }
 
-    /*public DefaultTableModel getDatos(int estado) {
-        switch (estado) {
-            case 0:
-                try {
-                    setColumnas();
-
-                    String line;
-                    Process p = Runtime.getRuntime().exec(System.getenv("windir") + "\\system32\\" + "tasklist.exe /fo csv /nh");
-                    // Se pueden usar los parámetros en tasklist  /fo csv /nh para sacar la info en formato CSV
-                    BufferedReader input
-                            = new BufferedReader(new InputStreamReader(p.getInputStream()));
-                    while ((line = input.readLine()) != null) {
-                        String[] dataLine = line.split(",");
-                        DefaultTM.addRow(dataLine);
-                    }
-                    input.close();
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                break;
-
-            case 1:
-                
-                break;
-        }
-        
-        return DefaultTM;
-    }*/
 }

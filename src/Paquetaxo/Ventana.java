@@ -1,23 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Paquetaxo;
 
-import java.io.BufferedReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 /**
@@ -53,10 +43,8 @@ public class Ventana extends javax.swing.JFrame {
                 int[] selectedRow = jtb_Tabla.getSelectedRows();
                 int[] selectedColumns = jtb_Tabla.getSelectedColumns();
 
-                int i = 0;
-                int j = 0;
-                for (i = 0; i < selectedRow.length; i++) {
-                    for (j = 0; j < selectedColumns.length; j++) {
+                for (int i = 0; i < selectedRow.length; i++) {
+                    for (int j = 0; j < selectedColumns.length; j++) {
                         // Pequeño truco
                         jtf_Fila.setText(""+selectedRow[i]);
                         if (selectedColumns[j] == 0 || selectedColumns[j] == 1) {
@@ -95,7 +83,7 @@ public class Ventana extends javax.swing.JFrame {
             condicion = false;
         }
 
-        int NumSesion = OP.makeRandom(1);
+        int NumSesion = OP.makeRandom(2);
 
         int Memoria = OP.makeRandom(100000);
 
@@ -119,12 +107,8 @@ public class Ventana extends javax.swing.JFrame {
 
     private void limpiarCajas() {
         jtf_Nombre.setText("");
-        //jtf_PID.setText("");
         jrb_Console.setSelected(false);
         jrb_Services.setSelected(false);
-        //jtf_NumSesion.setText("");
-        //jtf_Memoria.setText("");
-        //jtf_EstadoProceso.setText("");
     }
 
     private void convertir() {
