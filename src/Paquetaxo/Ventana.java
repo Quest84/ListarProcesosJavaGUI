@@ -111,7 +111,7 @@ public class Ventana extends javax.swing.JFrame {
         jrb_Services.setSelected(false);
     }
 
-    private void convertir() {
+    private void descargar() {
         try {
             TableModel model = jtb_Tabla.getModel();
             PrintWriter out = new PrintWriter("ListaProcesos.csv");
@@ -161,7 +161,7 @@ public class Ventana extends javax.swing.JFrame {
         jtf_EliminarProceso = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
-        jButton1 = new javax.swing.JButton();
+        jtb_Descargar = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JSeparator();
         jLabel4 = new javax.swing.JLabel();
         jSeparator4 = new javax.swing.JSeparator();
@@ -224,10 +224,10 @@ public class Ventana extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Nombre del Proceso a Eliminar");
 
-        jButton1.setText("Descargar Lista de Procesos");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jtb_Descargar.setText("Descargar Lista de Procesos");
+        jtb_Descargar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jtb_DescargarActionPerformed(evt);
             }
         });
 
@@ -276,7 +276,7 @@ public class Ventana extends javax.swing.JFrame {
                             .addComponent(jtb_EliminarProceso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jtf_EliminarProceso)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                            .addComponent(jtb_Descargar, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
                             .addComponent(jtb_NuevoProceso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btn_Salir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -325,7 +325,7 @@ public class Ventana extends javax.swing.JFrame {
                         .addGap(21, 21, 21)
                         .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1)
+                        .addComponent(jtb_Descargar)
                         .addGap(18, 18, 18)
                         .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -354,6 +354,7 @@ public class Ventana extends javax.swing.JFrame {
         
         OP.deleteRow(index);
         JOptionPane.showMessageDialog(this,"Proceso Eliminado");
+        descargar();
     }//GEN-LAST:event_jtb_EliminarProcesoActionPerformed
 
 
@@ -362,12 +363,13 @@ public class Ventana extends javax.swing.JFrame {
     }//GEN-LAST:event_jtf_EliminarProcesoActionPerformed
 
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        convertir();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void jtb_DescargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtb_DescargarActionPerformed
+        descargar();
+    }//GEN-LAST:event_jtb_DescargarActionPerformed
 
     private void jtb_NuevoProcesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtb_NuevoProcesoActionPerformed
         crear();
+        descargar();
     }//GEN-LAST:event_jtb_NuevoProcesoActionPerformed
 
     private void jtf_FilaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtf_FilaActionPerformed
@@ -413,7 +415,6 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JButton btn_Salir;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
@@ -424,6 +425,7 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JRadioButton jrb_Console;
     private javax.swing.JRadioButton jrb_Services;
+    private javax.swing.JButton jtb_Descargar;
     private javax.swing.JButton jtb_EliminarProceso;
     private javax.swing.JButton jtb_NuevoProceso;
     private javax.swing.JTable jtb_Tabla;
